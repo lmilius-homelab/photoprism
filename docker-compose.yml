@@ -82,14 +82,14 @@ services:
     # user: "1000:1000"
     volumes:
       # Your photo and video files ([local path]:[container path]):
-      - originals:/photoprism/originals
+      - /photoprism/originals:/photoprism/originals
       # Multiple folders can be indexed by mounting them as sub-folders of /photoprism/originals:
       # - "/mnt/Family:/photoprism/originals/Family"    # [folder_1]:/photoprism/originals/[folder_1]
       # - "/mnt/Friends:/photoprism/originals/Friends"  # [folder_2]:/photoprism/originals/[folder_2]
       # Mounting an import folder is optional (see docs):
-      - imports:/photoprism/import
+      - /photoprism/imports:/photoprism/import
       # Permanent storage for settings, index & sidecar files (DON'T REMOVE):
-      - cache:/photoprism/storage
+      - /photoprism/cache:/photoprism/storage
     networks:
     - db_net
 
@@ -101,7 +101,7 @@ services:
       - apparmor:unconfined
     command: mysqld --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=50
     volumes: # Don't remove permanent storage for index database files!
-      - db:/var/lib/mysql
+      - /photoprism/db:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: photoprism
@@ -112,29 +112,3 @@ services:
 
 networks:
   db_net:
-
-volumes:
-  db:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/photoprism/db'
-  originals:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/photoprism/originals'
-  imports:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/photoprism/imports'
-  cache:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/photoprism/cache'
