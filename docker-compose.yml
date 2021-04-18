@@ -119,22 +119,22 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/mnt/db'
+      device: '/photoprism/db'
   originals:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/mnt/originals'
+      device: '/photoprism/originals'
   imports:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/mnt/imports'
+      device: '/photoprism/imports'
   cache:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/mnt/cache'
+      device: '/photoprism/cache'
