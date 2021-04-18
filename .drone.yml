@@ -1,0 +1,42 @@
+---
+kind: pipeline
+name: photoprism
+type: docker
+
+trigger:
+  branch:
+  - master
+  event:
+  - push
+
+steps:
+- name: Deploy
+  image: docker/compose
+  commands:
+  - cd photoprism
+  - docker-compose pull
+  - docker-compose up -d
+  volumes:
+  - name: dockersock
+    path: /var/run/docker.sock
+  - name: target_key
+    path: ~/.ssh/id_rsa
+  environment:
+    MYSQL_PASSWORD:
+      from_secret: photoview_user_password
+    MYSQL_ROOT_PASSWORD:
+      from_secret: photoview_root_password
+    ADMIN_PASSWORD:
+      from_secret: admin_password
+    DOCKER_HOST: ssh://deployer@photos.milius.home
+  when:
+    event:
+    - push
+
+volumes:
+- name: dockersock
+  host:
+    path: /var/run/docker.sock
+- name: target_key
+  host:
+    path: /home/deployer/.ssh/drone_deploy
