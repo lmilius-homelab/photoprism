@@ -13,7 +13,7 @@ steps:
 - name: Deploy
   image: docker/compose
   commands:
-  - cd photoprism
+  - echo hello
 #  - docker-compose pull
 #  - docker-compose up -d
 #  volumes:
